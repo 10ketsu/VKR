@@ -16,6 +16,9 @@ from core.handlers.gamesByText import recommendations
 from core.handlers.randomGames import random_game
 from core.middleware import Middleware
 
+from core.handlers import clear_mute_games
+
+
 
 async def main():
     await init_db()
@@ -25,7 +28,10 @@ async def main():
     dp.callback_query.register(tags_search, F.data == 'tags_search')
     dp.callback_query.register(recommendations, F.data == 'recommendations')
 
-    await bot.set_my_commands([types.BotCommand(command="start", description="Старт")])
+    await bot.set_my_commands([
+        types.BotCommand(command="start", description="Старт"),
+        types.BotCommand(command="clear_mute_games", description="Очистить список исключенных игр"),
+    ])
     asyncio.create_task(update_games_scheduler())
     await dp.start_polling(bot)
 
